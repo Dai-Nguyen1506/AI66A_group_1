@@ -1,16 +1,37 @@
+"""
+Data Download Module
+Chức năng: Tải dữ liệu từ Kaggle và lưu vào data/raw
+Sử dụng: Chạy script này lần đầu tiên sau khi cài đặt dependencies
+
+Usage:
+    python src/data/download.py
+    
+Hoặc:
+    python -m src.data.download
+"""
+
 import pandas as pd
 import os
 import sys
 from pathlib import Path
 from typing import Optional
 
-# Thêm đường dẫn gốc để có thể import khi chạy script trực tiếp
-if __name__ == "__main__":
-    project_root = Path(__file__).parent.parent.parent
-    sys.path.insert(0, str(project_root))
-    from src.data.loader import save_processed_data
-else:
-    from .loader import save_processed_data
+
+def save_data_local(df: pd.DataFrame, filepath: str) -> None:
+    """
+    Lưu dữ liệu vào file CSV
+    
+    Args:
+        df (pd.DataFrame): DataFrame cần lưu
+        filepath (str): Đường dẫn lưu file
+    """
+    # Tạo thư mục nếu chưa tồn tại
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    
+    # Lưu file
+    df.to_csv(filepath, index=False)
+    print(f"✓ Saved {len(df):,} rows to {filepath}")
+
 
 def load_from_kagglehub(dataset_name: str = "kartik2112/fraud-detection",
                         file_path: str = "",
@@ -64,9 +85,9 @@ def load_from_kagglehub(dataset_name: str = "kartik2112/fraud-detection",
         if df is None:
             raise ValueError("Không thể đọc file với các encoding thông dụng")
         
-        # Optionally save to local
+        # Lưu vào thư mục local nếu được chỉ định
         if save_to:
-            save_processed_data(df, save_to)
+            save_data_local(df, save_to)
         
         return df
         
@@ -82,17 +103,24 @@ def load_from_kagglehub(dataset_name: str = "kartik2112/fraud-detection",
 def download_default_dataset():
     """
     Tự động download dataset mặc định cho project
-    (Credit Card Fraud Detection Dataset)
+    (Credit Card Fraud Detection Dataset từ Kaggle)
+    
+    Dataset sẽ được lưu vào thư mục data/raw/
     """
-    print("=" * 60)
+    print("=" * 70)
     print("🚀 CREDIT CARD FRAUD DETECTION - DATA DOWNLOADER")
-    print("=" * 60)
+    print("=" * 70)
+    print("📦 Dataset: kartik2112/fraud-detection")
+    print("🌐 Source: Kaggle")
     print()
     
     # Xác định đường dẫn lưu trữ
     project_root = Path(__file__).parent.parent.parent
     raw_data_dir = project_root / "data" / "raw"
     raw_data_dir.mkdir(parents=True, exist_ok=True)
+    
+    print(f"📂 Save location: {raw_data_dir}")
+    print()
     
     # Download training data
     train_file = raw_data_dir / "fraudTrain.csv"
@@ -128,37 +156,44 @@ def download_default_dataset():
             print(f"⏭️  Test data already exists: {test_file}")
         
         print()
-        print("=" * 60)
+        print("=" * 70)
         print("✨ DOWNLOAD COMPLETED SUCCESSFULLY!")
-        print("=" * 60)
+        print("=" * 70)
         print(f"📂 Data location: {raw_data_dir}")
+        print(f"   • fraudTrain.csv")
+        print(f"   • fraudTest.csv")
         print()
-        print("Next steps:")
-        print("  1. Run EDA notebook: notebooks/01_eda_exploration.ipynb")
-        print("  2. Or start training: python scripts/train.py")
-        print("=" * 60)
+        print("📋 Next steps:")
+        print("   1. Load data trong scripts: from src.data.loader import load_fraud_detection_data")
+        print("   2. Chạy EDA notebook: notebooks/01_eda_exploration.ipynb")
+        print("   3. Hoặc bắt đầu training: python scripts/train.py")
+        print("=" * 70)
         
     except Exception as e:
         print()
-        print("=" * 60)
+        print("=" * 70)
         print(f"❌ ERROR: {e}")
-        print("=" * 60)
+        print("=" * 70)
         print()
         print("💡 Troubleshooting:")
-        print("  1. Make sure you have Kaggle API configured")
-        print("  2. Run: pip install kagglehub")
-        print("  3. Check your internet connection")
+        print("   1. Cài đặt kagglehub: pip install kagglehub")
+        print("   2. Kiểm tra Kaggle API credentials")
+        print("   3. Kiểm tra kết nối internet")
+        print("=" * 70)
         sys.exit(1)
 
 
 if __name__ == "__main__":
     """
-    Chạy script này để tự động download dữ liệu:
+    Script khởi chạy để download dữ liệu lần đầu tiên
     
-    Usage:
+    Chạy sau khi cài đặt dependencies:
+        pip install -r requirements.txt
+        
+    Sau đó chạy:
         python src/data/download.py
     
-    Or from project root:
+    Hoặc từ thư mục gốc:
         python -m src.data.download
     """
     download_default_dataset()
