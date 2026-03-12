@@ -1,0 +1,68 @@
+# ============================================
+# CREDIT CARD FRAUD DETECTION - CONFIGURATION
+# ============================================
+
+# Cấu hình dữ liệu
+data:
+  raw_path: "data/raw"
+  processed_path: "data/processed"
+  target_column: "Class"  # Tên cột target (0: Normal, 1: Fraud)
+
+# Cấu hình model
+model:
+  name: "fraud_detection_rf_v1"
+  type: "random_forest"  # Options: "logistic", "random_forest", "xgboost"
+  save_path: "models"
+  
+  # Hyperparameters cho Random Forest
+  params:
+    n_estimators: 100
+    max_depth: 10
+    min_samples_split: 5
+    min_samples_leaf: 2
+    class_weight: "balanced"  # Quan trọng cho imbalanced data
+    random_state: 42
+    n_jobs: -1
+
+# Cấu hình training
+training:
+  test_size: 0.2
+  validation_size: 0.1
+  random_state: 42
+  
+  # Cross-validation
+  cv_folds: 5
+  
+  # Handling imbalanced data
+  sampling_strategy: "SMOTE"  # Options: "SMOTE", "undersampling", "none"
+
+# Cấu hình feature engineering
+features:
+  create_time_features: true
+  create_rolling_features: false
+  rolling_windows: [3, 5, 10]
+  
+  # Scaling
+  scaling_method: "standard"  # Options: "standard", "minmax", "robust"
+
+# Cấu hình evaluation
+evaluation:
+  metrics:
+    - "accuracy"
+    - "precision"
+    - "recall"
+    - "f1_score"
+    - "roc_auc"
+  
+  # Threshold cho classification (default: 0.5)
+  classification_threshold: 0.5
+  
+  # Save reports
+  save_confusion_matrix: true
+  save_roc_curve: true
+  save_feature_importance: true
+
+# Logging
+logging:
+  log_dir: "logs"
+  log_level: "INFO"

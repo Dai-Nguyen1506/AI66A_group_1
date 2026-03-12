@@ -1,0 +1,106 @@
+# ============================================
+# CREDIT CARD FRAUD DETECTION - .gitignore
+# ============================================
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+*.egg-info/
+dist/
+build/
+*.egg
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb_checkpoints/
+*/.ipynb_checkpoints/*
+
+# Data files (QUAN TRỌNG: Không commit dữ liệu nhạy cảm!)
+data/raw/*.csv
+data/raw/*.xlsx
+data/raw/*.json
+data/processed/*.csv
+data/processed/*.h5
+data/processed/*.hdf5
+data/external/*.csv
+
+# Chỉ commit .gitkeep
+!data/raw/.gitkeep
+!data/processed/.gitkeep
+!data/external/.gitkeep
+
+# Models (file lớn, không nên commit)
+models/*.pkl
+models/*.joblib
+models/*.h5
+models/*.pt
+models/*.pth
+models/*.onnx
+models/*.pb
+
+# Chỉ commit .gitkeep
+!models/.gitkeep
+
+# Reports (có thể commit hoặc không tùy ý)
+# reports/*.png
+# reports/*.jpg
+# reports/*.pdf
+
+# Logs
+logs/*.log
+logs/*.txt
+*.log
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# OS
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre
+.pyre/
+
+# Backup files
+*~
+*.bak
+*.swp
+
+# Temporary files
+tmp/
+temp/
+*.tmp
