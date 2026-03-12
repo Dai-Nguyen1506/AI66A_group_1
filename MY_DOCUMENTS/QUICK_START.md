@@ -22,9 +22,23 @@ pip install -r requirements.txt
 ```
 
 ### 2. Tải Dataset
+
+**Cách 1: Tự động (Khuyến nghị) ✨**
 ```bash
-# Tải từ Kaggle: https://www.kaggle.com/mlg-ulb/creditcardfraud
-# Đặt file creditcard.csv vào data/raw/
+# Windows
+setup_data.bat
+
+# Linux/Mac
+bash setup_data.sh
+
+# Hoặc chạy trực tiếp script Python
+python src/data/download.py
+```
+
+**Cách 2: Thủ công**
+```bash
+# Tải từ Kaggle: https://www.kaggle.com/datasets/kartik2112/fraud-detection
+# Đặt file fraudTrain.csv và fraudTest.csv vào data/raw/
 ```
 
 ### 3. Chạy EDA (Exploratory Data Analysis)

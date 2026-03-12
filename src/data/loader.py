@@ -25,74 +25,6 @@ def load_csv(filepath: str) -> pd.DataFrame:
     print(f"✓ Loaded {len(df):,} rows, {len(df.columns)} columns from {filepath}")
     return df
 
-
-def load_from_kagglehub(dataset_name: str = "kartik2112/fraud-detection",
-                        file_path: str = "",
-                        save_to: Optional[str] = None) -> pd.DataFrame:
-    """
-    Load dữ liệu từ Kaggle sử dụng kagglehub
-    
-    Args:
-        dataset_name (str): Tên dataset trên Kaggle (format: username/dataset)
-        file_path (str): Đường dẫn file trong dataset (để trống nếu chỉ có 1 file)
-        save_to (str, optional): Đường dẫn để lưu file CSV sau khi download
-        
-    Returns:
-        pd.DataFrame: DataFrame chứa dữ liệu
-        
-    Example:
-        >>> df = load_from_kagglehub("kartik2112/fraud-detection", "fraudTrain.csv")
-    """
-    try:
-        import kagglehub
-        
-        print(f"📥 Downloading dataset '{dataset_name}' from Kaggle...")
-        
-        # Download dataset và lấy đường dẫn thư mục
-        dataset_path = kagglehub.dataset_download(dataset_name)
-        
-        # Tìm file CSV trong thư mục download
-        if file_path:
-            full_path = os.path.join(dataset_path, file_path)
-        else:
-            # Tự động tìm file CSV đầu tiên
-            csv_files = [f for f in os.listdir(dataset_path) if f.endswith('.csv')]
-            if not csv_files:
-                raise FileNotFoundError("Không tìm thấy file CSV trong dataset")
-            full_path = os.path.join(dataset_path, csv_files[0])
-        
-        print(f"📖 Reading file: {os.path.basename(full_path)}")
-        
-        # Thử đọc với nhiều encoding khác nhau
-        encodings = ['utf-8', 'latin-1', 'iso-8859-1', 'cp1252']
-        df = None
-        
-        for encoding in encodings:
-            try:
-                df = pd.read_csv(full_path, encoding=encoding)
-                print(f"✓ Loaded {len(df):,} rows, {len(df.columns)} columns (encoding: {encoding})")
-                break
-            except UnicodeDecodeError:
-                continue
-        
-        if df is None:
-            raise ValueError("Không thể đọc file với các encoding thông dụng")
-        
-        # Optionally save to local
-        if save_to:
-            save_processed_data(df, save_to)
-        
-        return df
-        
-    except ImportError:
-        print("❌ kagglehub chưa được cài đặt!")
-        print("Cài đặt bằng lệnh: pip install kagglehub")
-        raise
-    except Exception as e:
-        print(f"❌ Lỗi khi load từ Kaggle: {e}")
-        raise
-
-
 def load_fraud_detection_data(source: str = 'local',
                               data_dir: str = 'data/raw',
                               dataset_name: str = "kartik2112/fraud-detection") -> pd.DataFrame:
@@ -141,19 +73,19 @@ def save_processed_data(df: pd.DataFrame, filepath: str) -> None:
     print(f"✓ Saved {len(df):,} rows to {filepath}")
 
 
-def get_data_info(df: pd.DataFrame) -> None:
-    """
-    In thông tin tổng quan về dataset
+# def get_data_info(df: pd.DataFrame) -> None:
+#     """
+#     In thông tin tổng quan về dataset
     
-    Args:
-        df (pd.DataFrame): DataFrame cần kiểm tra
-    """
-    print("=" * 60)
-    print("DATASET INFORMATION")
-    print("=" * 60)
-    print(f"Shape: {df.shape[0]:,} rows × {df.shape[1]} columns")
-    print(f"Memory usage: {df.memory_usage(deep=True).sum() / 1024**2:.2f} MB")
-    print(f"\nColumn types:")
-    print(df.dtypes.value_counts())
-    print(f"\nMissing values: {df.isnull().sum().sum()}")
-    print("=" * 60)
+#     Args:
+#         df (pd.DataFrame): DataFrame cần kiểm tra
+#     """
+#     print("=" * 60)
+#     print("DATASET INFORMATION")
+#     print("=" * 60)
+#     print(f"Shape: {df.shape[0]:,} rows × {df.shape[1]} columns")
+#     print(f"Memory usage: {df.memory_usage(deep=True).sum() / 1024**2:.2f} MB")
+#     print(f"\nColumn types:")
+#     print(df.dtypes.value_counts())
+#     print(f"\nMissing values: {df.isnull().sum().sum()}")
+#     print("=" * 60)
