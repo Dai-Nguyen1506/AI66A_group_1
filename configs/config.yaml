@@ -6,7 +6,7 @@
 data:
   raw_path: "data/raw"
   processed_path: "data/processed"
-  target_column: "Class"  # Tên cột target (0: Normal, 1: Fraud)
+  target_column: "is_fraud"  # Tên cột target (0: Normal, 1: Fraud)
 
 # Cấu hình model
 model:
