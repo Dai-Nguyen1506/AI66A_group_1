@@ -13,7 +13,7 @@ def get_data_info(df: pd.DataFrame) -> None:
     print(f"\nMissing values: {df.isnull().sum().sum()}")
     print("=" * 60)
 
-def load_data(file_path: str, nrows: int | None = None) -> pd.DataFrame:
+def load_csv(file_path: str, nrows: int | None = None) -> pd.DataFrame:
     base_path = Path(__file__).resolve().parents[1]
     full_path = base_path / file_path
     if not full_path.exists():
@@ -33,5 +33,5 @@ def save_file(df, file_path):
     save_dir = "../data/processed"
     os.makedirs(save_dir, exist_ok=True)
     save_path = os.path.join(save_dir, file_path)
-    df.to_parquet(save_path, index=True)
+    df.to_csv(save_path, index=True)
     print(f"File saved as: {save_path}")
