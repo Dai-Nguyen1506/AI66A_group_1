@@ -1,1 +1,1 @@
-# Module định nghĩa và training models
+# Module training models and evaluating performance
