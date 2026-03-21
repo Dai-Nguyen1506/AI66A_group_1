@@ -1,114 +1,82 @@
-"""
-Feature Engineering Module
-Chức năng: Tạo các features mới từ dữ liệu gốc
-"""
-
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import StandardScaler, MinMaxScaler
 from typing import List, Tuple
 
 
-def create_time_features(df: pd.DataFrame, time_column: str = 'Time') -> pd.DataFrame:
-    """
-    Tạo features từ cột thời gian
-    
-    Args:
-        df (pd.DataFrame): DataFrame
-        time_column (str): Tên cột thời gian
-        
-    Returns:
-        pd.DataFrame: DataFrame với time features mới
-    """
+def create_time_features(df):
     df_new = df.copy()
-    
-    # Giả sử Time là số giây từ thời điểm bắt đầu
-    df_new['hour'] = (df_new[time_column] // 3600) % 24
-    df_new['day'] = df_new[time_column] // (3600 * 24)
-    
-    # Is night time (23:00 - 6:00)
-    df_new['is_night'] = ((df_new['hour'] >= 23) | (df_new['hour'] <= 6)).astype(int)
-    
-    print(f"✓ Created time features: hour, day, is_night")
+
+    df_new['trans_date_trans_time'] = pd.to_datetime(df['trans_date_trans_time'])
+
+    df_new['hour'] = df_new['trans_date_trans_time'].dt.hour
+    df_new['day_of_week'] = df_new['trans_date_trans_time'].dt.weekday
+    df_new['month'] = df_new['trans_date_trans_time'].dt.month
+    df_new['is_weekend'] = df_new['day_of_week'].isin([5, 6]).astype(int)
+    df_new['is_night'] = df_new['hour'].isin([22, 23, 0, 1, 2, 3]).astype(int)
+
     return df_new
 
-
-def create_rolling_features(df: pd.DataFrame, 
-                           column: str, 
-                           windows: List[int] = [3, 5, 10]) -> pd.DataFrame:
-    """
-    Tạo rolling window features
-    
-    Args:
-        df (pd.DataFrame): DataFrame
-        column (str): Tên cột để tính rolling
-        windows (List[int]): Danh sách window sizes
-        
-    Returns:
-        pd.DataFrame: DataFrame với rolling features
-    """
+def create_amount_features(df):
     df_new = df.copy()
+
+    df_new['amt_log'] = np.log1p(df['amt'])
+    df_new['amt_zscore'] = (df['amt'] - df['amt'].mean()) / df['amt'].std()
     
-    for window in windows:
-        df_new[f'{column}_rolling_mean_{window}'] = df_new[column].rolling(window).mean()
-        df_new[f'{column}_rolling_std_{window}'] = df_new[column].rolling(window).std()
-    
-    # Fill NaN với giá trị gốc
-    df_new = df_new.fillna(df_new[column])
-    
-    print(f"✓ Created rolling features for '{column}' with windows {windows}")
     return df_new
 
-
-def scale_features(X: pd.DataFrame, 
-                   method: str = 'standard',
-                   fit_scaler: bool = True) -> Tuple[pd.DataFrame, object]:
-    """
-    Chuẩn hóa features
-    
-    Args:
-        X (pd.DataFrame): Features cần scale
-        method (str): 'standard' hoặc 'minmax'
-        fit_scaler (bool): Fit scaler mới hoặc dùng scaler có sẵn
-        
-    Returns:
-        Tuple[pd.DataFrame, object]: (Scaled features, Scaler object)
-    """
-    if method == 'standard':
-        scaler = StandardScaler()
-    elif method == 'minmax':
-        scaler = MinMaxScaler()
-    else:
-        raise ValueError(f"Unknown scaling method: {method}")
-    
-    if fit_scaler:
-        X_scaled = scaler.fit_transform(X)
-    else:
-        X_scaled = scaler.transform(X)
-    
-    X_scaled_df = pd.DataFrame(X_scaled, columns=X.columns, index=X.index)
-    print(f"✓ Scaled features using '{method}' scaler")
-    
-    return X_scaled_df, scaler
-
-
-def create_interaction_features(df: pd.DataFrame, 
-                                col1: str, 
-                                col2: str) -> pd.DataFrame:
-    """
-    Tạo interaction features giữa 2 cột
-    
-    Args:
-        df (pd.DataFrame): DataFrame
-        col1 (str): Cột 1
-        col2 (str): Cột 2
-        
-    Returns:
-        pd.DataFrame: DataFrame với interaction feature
-    """
+def create_age_feature(df):
     df_new = df.copy()
-    df_new[f'{col1}_x_{col2}'] = df_new[col1] * df_new[col2]
-    df_new[f'{col1}_div_{col2}'] = df_new[col1] / (df_new[col2] + 1e-5)
+
+    df_new['dob'] = pd.to_datetime(df_new['dob'])
+    df_new['age'] = df_new['trans_date_trans_time'].dt.year - df_new['dob'].dt.year
+    # Drop dob after creating age
+    df_new.drop('dob', axis=1, inplace=True) 
     
-    print(f"✓ Created interaction features between '{col1}' and '{col2}'")
     return df_new
+
+def compute_distance_km(df):
+    """
+    Compute Haversine distance between cardholder and merchant
+    """
+    earth_radius_km = 6371.0
+
+    lat1 = np.radians(df['lat'])
+    lon1 = np.radians(df['long'])
+    lat2 = np.radians(df['merch_lat'])
+    lon2 = np.radians(df['merch_long'])
+
+    delta_lat = lat2 - lat1
+    delta_lon = lon2 - lon1
+
+    a = np.sin(delta_lat / 2) ** 2 + \
+        np.cos(lat1) * np.cos(lat2) * np.sin(delta_lon / 2) ** 2
+
+    c = 2 * np.arcsin(np.sqrt(a))
+
+    return earth_radius_km * c
+
+def create_geo_features(df):
+
+    df_new = df.copy()
+
+    df_new['distance_km'] = compute_distance_km(df_new)
+
+    return df_new
+
+def create_aggregation_features(df):
+    df_new = df.copy()
+
+    df_new['merchant_freq'] = df['merchant'].map(df['merchant'].value_counts())
+    df_new['category_freq'] = df['category'].map(df['category'].value_counts())
+    df_new['city_freq'] = df['city'].map(df['city'].value_counts())
+
+    return df_new
+
+def target_encode(train, test, col, target='is_fraud'):
+    # ONLY APPLY ON TRAIN → then map to test
+    means = train.groupby(col)[target].mean()
+    train[col + '_fraud_rate'] = train[col].map(means)
+    test[col + '_fraud_rate'] = test[col].map(means)
+    
+    return train, test
