@@ -33,5 +33,5 @@ def save_file(df, file_path):
     save_dir = "../data/processed"
     os.makedirs(save_dir, exist_ok=True)
     save_path = os.path.join(save_dir, file_path)
-    df.to_csv(save_path, index=True)
+    df.to_csv(save_path, index=False)
     print(f"File saved as: {save_path}")
