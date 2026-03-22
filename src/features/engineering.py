@@ -76,5 +76,10 @@ def target_encode(train, test, col, target='is_fraud'):
     means = train.groupby(col)[target].mean()
     train[col + '_fraud_rate'] = train[col].map(means)
     test[col + '_fraud_rate'] = test[col].map(means)
+
+    # Fill unseen categories with global mean
+    global_mean = train[target].mean()
+    train[col + '_fraud_rate'].fillna(global_mean, inplace=True)
+    test[col + '_fraud_rate'].fillna(global_mean, inplace=True)
     
     return train, test
