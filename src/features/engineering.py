@@ -1,7 +1,5 @@
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import StandardScaler, MinMaxScaler
-from typing import List, Tuple
 
 
 def create_time_features(df):
