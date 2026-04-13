@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-
+from sklearn.model_selection import StratifiedKFold
 
 def create_time_features(df):
     df_new = df.copy()
@@ -62,24 +62,44 @@ def create_geo_features(df):
 
     return df_new
 
-def create_aggregation_features(df):
-    df_new = df.copy()
+def create_aggregation_features(train, test):
+    train_new = train.copy()
+    test_new = test.copy()
 
-    df_new['merchant_freq'] = df['merchant'].map(df['merchant'].value_counts())
-    df_new['category_freq'] = df['category'].map(df['category'].value_counts())
-    df_new['city_freq'] = df['city'].map(df['city'].value_counts())
+    merchant_counts = train_new['merchant'].value_counts()
 
-    return df_new
+    train_new['merchant_freq'] = train_new['merchant'].map(merchant_counts)
+    test_new['merchant_freq'] = test_new['merchant'].map(merchant_counts).fillna(0)
 
-def target_encode(train, test, col, target='is_fraud'):
-    # ONLY APPLY ON TRAIN → then map to test
-    means = train.groupby(col)[target].mean()
-    train[col + '_fraud_rate'] = train[col].map(means)
-    test[col + '_fraud_rate'] = test[col].map(means)
+    category_counts = train_new['category'].value_counts()
+    train_new['category_freq'] = train_new['category'].map(category_counts)
+    test_new['category_freq'] = test_new['category'].map(category_counts).fillna(0)
 
-    # Fill unseen categories with global mean
+    city_counts = train_new['city'].value_counts()
+    train_new['city_freq'] = train_new['city'].map(city_counts)
+    test_new['city_freq'] = test_new['city'].map(city_counts).fillna(0)
+
+    return train_new, test_new
+
+def target_encode(train, test, col, target='is_fraud', n_splits=5, alpha=10):
+    train_encoded = np.zeros(len(train))
+    kf = StratifiedKFold(n_splits=n_splits, shuffle=True, random_state=42)
+
+    for train_idx, val_idx in kf.split(train, train[target]):
+        X_tr, X_val = train.iloc[train_idx], train.iloc[val_idx]
+
+        global_mean = X_tr[target].mean()
+        stats = X_tr.groupby(col)[target].agg(['mean', 'count'])
+        smooth = (stats['count'] * stats['mean'] + alpha * global_mean) / (stats['count'] + alpha)
+
+        train_encoded[val_idx] = X_val[col].map(smooth)
+
     global_mean = train[target].mean()
-    train[col + '_fraud_rate'].fillna(global_mean, inplace=True)
-    test[col + '_fraud_rate'].fillna(global_mean, inplace=True)
-    
+    train[col + '_fraud_rate'] = np.where(np.isnan(train_encoded), global_mean, train_encoded)
+
+    stats = train.groupby(col)[target].agg(['mean', 'count'])
+    smooth = (stats['count'] * stats['mean'] + alpha * global_mean) / (stats['count'] + alpha)
+
+    test[col + '_fraud_rate'] = test[col].map(smooth).fillna(global_mean)
+
     return train, test
