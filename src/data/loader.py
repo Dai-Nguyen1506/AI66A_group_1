@@ -30,7 +30,7 @@ def load_csv(file_path: str, nrows: int | None = None) -> pd.DataFrame:
 
 
 def save_file(df, file_path):
-    save_dir = "../data/processed"
+    save_dir = "../data"
     os.makedirs(save_dir, exist_ok=True)
     save_path = os.path.join(save_dir, file_path)
     df.to_csv(save_path, index=False)
