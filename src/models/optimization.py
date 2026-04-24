@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import precision_recall_curve, confusion_matrix
 
-def find_optimal_threshold(model, X_test, y_test, beta=2, name="Model", plot=True):
+def find_optimal_threshold(model, X_test, y_test, beta=2, name="Model", plot=True, plot_saving=False):
     """
     Evaluates all thresholds on the PR curve.
 
@@ -65,7 +65,11 @@ def find_optimal_threshold(model, X_test, y_test, beta=2, name="Model", plot=Tru
         axes[1].legend()
         axes[1].grid(True, alpha=0.4)
 
-        plt.tight_layout()
+        fig.suptitle(f"{name} Threshold Optimization", fontsize=16, fontweight='bold')
+        
+        plt.tight_layout(rect=[0, 0, 1, 0.95])
+        if plot_saving:
+            plt.savefig(f"../reports/{name}_optimization.png", dpi=300, bbox_inches='tight')
         plt.show()
 
     return best_threshold

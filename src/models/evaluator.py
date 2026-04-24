@@ -48,3 +48,32 @@ def plot_PR_curve(model, X_test, y_test, name="Model"):
     plt.legend()
     plt.grid()
     plt.show()
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
+from pathlib import Path
+
+def plot_confusion_matrix(model, X_test, y_test, threshold=0.3, name="Model", save=True):
+    y_prob = model.predict_proba(X_test)[:, 1]
+    y_pred = (y_prob > threshold).astype(int)    
+    
+    cm = confusion_matrix(y_test, y_pred)
+
+    fig, ax = plt.subplots(figsize=(5, 4))
+
+    sns.heatmap(cm, annot=True, fmt='d', cmap='Blues',
+                xticklabels=['Non-Fraud', 'Fraud'],
+                yticklabels=['Non-Fraud', 'Fraud'],
+                ax=ax)
+
+    ax.set_xlabel("Predicted")
+    ax.set_ylabel("Actual")
+    ax.set_title(f"{name} Confusion Matrix")
+
+    plt.tight_layout(rect=[0, 0, 1, 0.95])
+
+    if save:
+            plt.savefig(f"../reports/{name}_confusion_matrix.png", dpi=300, bbox_inches='tight')
+
+    plt.show()
