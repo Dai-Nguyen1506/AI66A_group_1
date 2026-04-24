@@ -23,7 +23,7 @@ build/
 *.ipynb_checkpoints/
 */.ipynb_checkpoints/*
 
-# Data files (QUAN TRỌNG: Không commit dữ liệu nhạy cảm!)
+# Data files (IMPORTANT: Do not commit sensitive data!)
 data/raw/*.csv
 data/raw/*.xlsx
 data/raw/*.json
@@ -32,12 +32,12 @@ data/processed/*.h5
 data/processed/*.hdf5
 data/external/*.csv
 
-# Chỉ commit .gitkeep
+# Only keep .gitkeep to preserve folder structure
 !data/raw/.gitkeep
 !data/processed/.gitkeep
 !data/external/.gitkeep
 
-# Models (file lớn, không nên commit)
+# Models (large files - should not be committed)
 models/*.pkl
 models/*.joblib
 models/*.h5
@@ -46,25 +46,21 @@ models/*.pth
 models/*.onnx
 models/*.pb
 
-# Chỉ commit .gitkeep
+# Reports
+reports/*.png
+reports/*.jpg
+reports/*.pdf
+
+# Only keep .gitkeep
 !models/.gitkeep
-
-# Reports (có thể commit hoặc không tùy ý)
-# reports/*.png
-# reports/*.jpg
-# reports/*.pdf
-
-# Logs
-logs/*.log
-logs/*.txt
-*.log
+!reports/.gitkeep
 
 # Environment variables
 .env
 .env.local
 .env.*.local
 
-# IDE
+# IDE / Editors
 .vscode/
 .idea/
 *.swp
@@ -72,7 +68,7 @@ logs/*.txt
 *.sublime-project
 *.sublime-workspace
 
-# OS
+# Operating System files
 .DS_Store
 .DS_Store?
 ._*
@@ -81,13 +77,13 @@ logs/*.txt
 ehthumbs.db
 Thumbs.db
 
-# Testing
+# Testing / Coverage
 .pytest_cache/
 .coverage
 htmlcov/
 .tox/
 
-# MyPy
+# Type checking (MyPy)
 .mypy_cache/
 .dmypy.json
 dmypy.json
@@ -104,7 +100,3 @@ dmypy.json
 tmp/
 temp/
 *.tmp
-
-# Other
-REPORT/
-MY_DOCUMENTS/
