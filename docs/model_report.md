@@ -1,6 +1,6 @@
 # 1. Executive Summary
 - Fraud detection model for credit card transactions.
-- Dataset: 1.85M transactions, 0.38% fraud rate.
+- Dataset: 1.85M transactions, 0.52% fraud rate.
 - Best model: XGBoost — catches 85% of fraud with 76% precision.
 - False alert rate: 0.10% of legitimate transactions.
 
