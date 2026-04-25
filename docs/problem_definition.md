@@ -81,4 +81,4 @@ the cost of a false alert (false positive), the model is optimized for:
 Accuracy is explicitly excluded as a meaningful metric for this problem.
 
 ## Sources
-[text](https://finance.yahoo.com/news/global-card-fraud-losses-33-170800960.html)
+[Nilson Report (2026)](https://finance.yahoo.com/news/global-card-fraud-losses-33-170800960.html)
