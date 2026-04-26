@@ -39,7 +39,7 @@ def class_weights(y_train):
     return scale_pos_weight
 ```
 
-$$\text{scale pos weight} = \frac{n\_negatives}{n\_positives} =
+$$\text{scale pos weight} = \frac{n_{negatives}}{n_{positives}} =
 \frac{1{,}289{,}169}{7{,}506} \approx 171.75$$
 
 This value tells XGBoost to penalize a missed fraud case 171.75× more
