@@ -190,10 +190,14 @@ SHAP (SHapley Additive exPlanations) was used to measure the contribution
 of each feature to individual predictions, providing both direction and
 magnitude of influence.
 
+![SHAP Summary](reports/shap_summary.png)
+
 ### Permutation Importance
 Permutation importance was used to measure the drop in PR-AUC when each
 feature's values are randomly shuffled. Features with negative permutation
 importance actively harm the model and are strong candidates for removal.
+
+![Permutation Importance](reports/permutation_importance.png)
 
 Features were removed if they showed:
 - Near-zero or negative permutation importance
