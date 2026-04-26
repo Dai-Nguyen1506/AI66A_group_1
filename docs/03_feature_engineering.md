@@ -115,7 +115,7 @@ out-of-fold estimation to prevent target leakage:
 Target encoding is applied using StratifiedKFold (k=5) with Laplace smoothing
 (alpha=10) to handle rare categories:
 
-$$\text{smoothed\_rate} = \frac{n \cdot \bar{y}_{group} + \alpha \cdot \bar{y}_{global}}{n + \alpha}$$
+$$\text{smoothed rate} = \frac{n \cdot \bar{y}_{group} + \alpha \cdot \bar{y}_{global}}{n + \alpha}$$
 
 Where:
 - $n$ = number of transactions in the group
@@ -190,14 +190,14 @@ SHAP (SHapley Additive exPlanations) was used to measure the contribution
 of each feature to individual predictions, providing both direction and
 magnitude of influence.
 
-![SHAP Summary](reports/shap_summary.png)
+![SHAP Summary](../reports/shap_summary.png)
 
 ### Permutation Importance
 Permutation importance was used to measure the drop in PR-AUC when each
 feature's values are randomly shuffled. Features with negative permutation
 importance actively harm the model and are strong candidates for removal.
 
-![Permutation Importance](reports/permutation_importance.png)
+![Permutation Importance](../reports/permutation_importance.png)
 
 Features were removed if they showed:
 - Near-zero or negative permutation importance

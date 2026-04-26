@@ -24,7 +24,7 @@ representing less than 0.6% of the training set. This imbalance is
 representative of real-world fraud rates and is the central challenge
 of this project.
 
-!![Fraud Distribution](reports/fraud_distribution.png)
+![Fraud Distribution](../reports/fraud_distribution.png)
 
 ---
 
@@ -99,7 +99,7 @@ is significantly higher than for legitimate ones, and extreme values in `amt`
 tend to cluster in the fraud class. Removing or capping these outliers would
 suppress a genuine fraud signal.
 
-![Transaction Amount](reports/transaction_amount.png)
+![Transaction Amount](../reports/transaction_amount.png)
 
 ### Note on Leakage Risk
 
