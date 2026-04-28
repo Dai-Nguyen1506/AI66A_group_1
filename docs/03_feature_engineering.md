@@ -225,6 +225,63 @@ After feature selection, 9 features were retained:
 
 ---
 
+## Preprocessing Before Training
+
+Two additional preprocessing steps are applied after feature engineering
+and before model training:
+
+### 1. Feature Name Cleaning
+
+XGBoost does not accept special characters in feature names. All column
+names are cleaned by replacing any non-alphanumeric characters with
+underscores and removing duplicate column names:
+
+```python
+def clean_feature_names(df):
+    df.columns = [
+        re.sub(r'[^A-Za-z0-9_]+', '_', col)
+        for col in df.columns
+    ]
+    df = df.loc[:, ~df.columns.duplicated()]
+    return df
+```
+
+This step is applied to both train and test sets before any model training
+or evaluation.
+
+### 2. Label Encoding
+
+The remaining categorical feature (`gender`) cannot be passed directly to
+XGBoost as a string. One-hot encoding is unsuitable due to high cardinality
+in some categorical columns, so label encoding is used instead.
+
+To prevent data leakage, the label encoder is fit on the combined
+train and test sets — ensuring that all category values seen at inference
+time are known to the encoder:
+
+```python
+def encoding(X_train, X_test):
+    for col in X_train.select_dtypes(include='object').columns:
+        le = LabelEncoder()
+
+        # Fit on combined data to handle all possible values
+        combined = pd.concat([X_train[col], X_test[col]], axis=0).astype(str)
+        le.fit(combined)
+
+        X_train[col] = le.transform(X_train[col].astype(str))
+        X_test[col]  = le.transform(X_test[col].astype(str))
+
+    return X_train, X_test
+```
+
+**Note:** Fitting the encoder on combined train and test data is acceptable
+here because label encoding of categorical values (e.g., `M` → 0, `F` → 1)
+does not involve the target variable and therefore introduces no leakage.
+This is distinct from target encoding, where fitting on the full dataset
+would leak fraud rate information from the test set.
+
+---
+
 ## Sources
 
 - Haversine formula: standard spherical geometry, no external citation required
