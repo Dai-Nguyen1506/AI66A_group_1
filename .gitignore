@@ -46,11 +46,6 @@ models/*.pth
 models/*.onnx
 models/*.pb
 
-# Reports
-reports/*.png
-reports/*.jpg
-reports/*.pdf
-
 # Only keep .gitkeep
 !models/.gitkeep
 !reports/.gitkeep
