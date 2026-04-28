@@ -92,7 +92,7 @@ has negligible impact on model performance.
 
 ### Confusion Matrix
 
-![XGBoost Confusion Matrix](../reports/Tuned_XGBoost_confusion_matrix.png)
+![XGBoost Confusion Matrix](../reports/images/Tuned_XGBoost_confusion_matrix.png)
 
 - **1,824** fraud cases correctly caught out of 2,145 total (**85.0%**)
 - **321** fraud cases missed
@@ -106,7 +106,7 @@ operating points, with PR-AUC of 0.8975. The optimal threshold (0.9534)
 is marked on the curve at the point of maximum F2-score, corresponding
 to Precision=76.2% and Recall=85.0%.
 
-![XGBoost Optimization](../reports/Tuned_XGBoost_optimization.png)
+![XGBoost Optimization](../reports/images/Tuned_XGBoost_optimization.png)
 
 ---
 

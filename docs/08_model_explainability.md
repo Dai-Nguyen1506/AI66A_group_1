@@ -56,7 +56,7 @@ more complete and reliable picture of feature importance.
 
 ## SHAP Summary Plot Findings
 
-![SHAP Summary](../reports/shap_summary.png)
+![SHAP Summary](../reports/images/shap_summary.png)
 
 Features are ordered by mean absolute SHAP value (top = most impactful).
 Each point represents one transaction — color indicates feature value
@@ -209,7 +209,7 @@ leading role in predictions.
 
 ## Permutation Importance Findings
 
-![Permutation Importance](../reports/permutation_importance.png)
+![Permutation Importance](../reports/images/permutation_importance.png)
 
 Permutation importance confirmed the SHAP findings for top features
 (`amt`, `hour`, `age`, `category`, `category_freq`, `category_fraud_rate`)

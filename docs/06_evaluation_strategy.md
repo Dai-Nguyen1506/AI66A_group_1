@@ -174,9 +174,9 @@ The optimal threshold is found by evaluating the F2-score at every point
 on the Precision-Recall curve and selecting the threshold that maximizes it:
 
 ```python
-def find_optimal_threshold(model, X_test, y_test, beta=2, name="Model"):
+def find_optimal_threshold(model, X_train, y_train, beta=2, name="Model"):
     y_prob = model.predict_proba(X_test)[:, 1]
-    precision, recall, thresholds = precision_recall_curve(y_test, y_prob)
+    precision, recall, thresholds = precision_recall_curve(y_train, y_prob)
 
     # Align arrays (precision/recall have one extra boundary element)
     p = precision[:-1]
@@ -193,7 +193,7 @@ def find_optimal_threshold(model, X_test, y_test, beta=2, name="Model"):
 ```
 
 **The function:**
-1. Computes predicted probabilities for all test transactions
+1. Computes predicted probabilities for all train transactions
 2. Generates the full Precision-Recall curve across all possible thresholds
 3. Computes F2-score at every threshold point
 4. Returns the threshold that maximizes F2-score
