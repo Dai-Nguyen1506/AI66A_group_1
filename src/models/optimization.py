@@ -2,7 +2,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from sklearn.metrics import precision_recall_curve, confusion_matrix
 
-def find_optimal_threshold(model, X_test, y_test, beta=2, name="Model", plot=True, plot_saving=False):
+def find_optimal_threshold(model, X_train, y_train, beta=2, name="Model", plot=True, plot_saving=False):
     """
     Evaluates all thresholds on the PR curve.
 
@@ -11,8 +11,8 @@ def find_optimal_threshold(model, X_test, y_test, beta=2, name="Model", plot=Tru
           beta=2  -> penalises missed fraud more (recommended for fraud)
           beta=0.5-> penalises false alerts more
     """
-    y_prob = model.predict_proba(X_test)[:, 1]
-    precision, recall, thresholds = precision_recall_curve(y_test, y_prob)
+    y_prob = model.predict_proba(X_train)[:, 1]
+    precision, recall, thresholds = precision_recall_curve(y_train, y_prob)
 
     # compute F-beta for every threshold
     # precision/recall arrays have one extra element (boundary), align them
@@ -39,7 +39,7 @@ def find_optimal_threshold(model, X_test, y_test, beta=2, name="Model", plot=Tru
     # confusion matrix at optimal threshold
     y_pred_opt = (y_prob >= best_threshold).astype(int)
     print(f"  Confusion Matrix @ threshold={best_threshold:.4f}")
-    print(confusion_matrix(y_test, y_pred_opt))
+    print(confusion_matrix(y_train, y_pred_opt))
 
     if plot:
         fig, axes = plt.subplots(1, 2, figsize=(14, 5))
@@ -69,7 +69,7 @@ def find_optimal_threshold(model, X_test, y_test, beta=2, name="Model", plot=Tru
         
         plt.tight_layout(rect=[0, 0, 1, 0.95])
         if plot_saving:
-            plt.savefig(f"../reports/{name}_optimization.png", dpi=300, bbox_inches='tight')
+            plt.savefig(f"../reports/images/{name}_optimization.png", dpi=300, bbox_inches='tight')
         plt.show()
 
     return best_threshold
