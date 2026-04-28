@@ -206,8 +206,5 @@ transactions to keep the model current with evolving fraud patterns.
 ## Sources
 
 - joblib documentation: [https://joblib.readthedocs.io](https://joblib.readthedocs.io)
-  — Please verify URL is current before publishing
 - FastAPI documentation: [https://fastapi.tiangolo.com](https://fastapi.tiangolo.com)
-  — Please verify URL is current before publishing
 - MLflow documentation: [https://mlflow.org](https://mlflow.org)
-  — Please verify URL is current before publishing

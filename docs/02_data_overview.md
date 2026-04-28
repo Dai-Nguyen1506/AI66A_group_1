@@ -114,5 +114,3 @@ from the target variable.
 ## Sources
 
 - [Kaggle Dataset — Credit Card Fraud Detection (Kartik Shenoy)](https://www.kaggle.com/datasets/kartik2112/fraud-detection)
-  — Please verify dataset description details (date range, number of customers/merchants)
-  against the Kaggle page directly.

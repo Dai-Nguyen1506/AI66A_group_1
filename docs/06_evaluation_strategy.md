@@ -221,9 +221,7 @@ maintaining strong recall.
 
 - Optuna: Akiba, T., et al. (2019). *Optuna: A Next-generation
   Hyperparameter Optimization Framework*. KDD 2019.
-  — Please verify citation details before publishing
 - F-beta score: Van Rijsbergen, C. J. (1979). *Information Retrieval*.
-  Butterworth. — Please verify citation details before publishing
+  Butterworth. 
 - PR-AUC vs ROC-AUC for imbalanced data: Davis, J., & Goadrich, M. (2006).
   *The relationship between Precision-Recall and ROC curves*. ICML 2006.
-  — Please verify citation details before publishing

@@ -190,11 +190,8 @@ Graph Neural Networks have a natural advantage.
 
 - XGBoost: Chen, T., & Guestrin, C. (2016). *XGBoost: A Scalable Tree
   Boosting System*. KDD 2016.
-  — Please verify citation details before publishing
 - LightGBM: Ke, G., et al. (2017). *LightGBM: A Highly Efficient Gradient
   Boosting Decision Tree*. NeurIPS 2017.
-  — Please verify citation details before publishing
 - General finding on tabular data: Grinsztajn, L., Oyallon, E., & Varoquaux,
   G. (2022). *Why tree-based models still outperform deep learning on tabular
   data*. NeurIPS 2022.
-  — Please verify citation details before publishing

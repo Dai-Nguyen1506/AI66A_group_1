@@ -190,11 +190,10 @@ complex dataset.
 
 ## Sources
 
-- Rutecki, M. (2021). *Best Techniques and Metrics for Imbalanced Dataset*.
+- Rutecki, M. (2023). *Best Techniques and Metrics for Imbalanced Dataset*.
   Kaggle Notebook.
   [www.kaggle.com/code/marcinrutecki/best-techniques-and-metrics-for-imbalanced-dataset/notebook](https://www.kaggle.com/code/marcinrutecki/best-techniques-and-metrics-for-imbalanced-dataset/notebook)
-  — Please verify notebook title and author details before publishing
-- Kim, O. (2021). *CreditCard Fraud — Balance is Key (feat. PyCaret)*.
+
+- Kim, O. (2022). *CreditCard Fraud — Balance is Key (feat. PyCaret)*.
   Kaggle Notebook.
   [www.kaggle.com/code/ohseokkim/creditcard-fraud-balance-is-key-feat-pycaret](https://www.kaggle.com/code/ohseokkim/creditcard-fraud-balance-is-key-feat-pycaret)
-  — Please verify notebook title and author details before publishing

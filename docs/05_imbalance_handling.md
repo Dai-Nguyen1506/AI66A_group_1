@@ -217,7 +217,5 @@ strategy for the final model.
 
 - SMOTE: Chawla, N. V., et al. (2002). *SMOTE: Synthetic Minority
   Over-sampling Technique*. Journal of Artificial Intelligence Research.
-  — Please verify citation details before publishing
 - XGBoost scale_pos_weight: Chen, T., & Guestrin, C. (2016). *XGBoost:
   A Scalable Tree Boosting System*. KDD 2016.
-  — Please verify citation details before publishing

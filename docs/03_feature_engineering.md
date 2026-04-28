@@ -284,9 +284,8 @@ would leak fraud rate information from the test set.
 
 ## Sources
 
-- Haversine formula: standard spherical geometry, no external citation required
+- Haversine formula: standard spherical geometry
 - SHAP methodology: Lundberg, S. M., & Lee, S. I. (2017). *A unified approach
   to interpreting model predictions*. NeurIPS 2017.
-  — Please verify citation details before publishing
 - Laplace smoothing for target encoding: standard technique, widely documented
   in the feature engineering literature

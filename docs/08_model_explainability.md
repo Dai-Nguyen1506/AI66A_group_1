@@ -264,7 +264,6 @@ actively harming the model:
 
 - SHAP: Lundberg, S. M., & Lee, S. I. (2017). *A unified approach to
   interpreting model predictions*. NeurIPS 2017.
-  — Please verify citation details before publishing
+
 - Permutation importance: Breiman, L. (2001). *Random Forests*.
   Machine Learning, 45(1), 5–32.
-  — Please verify citation details before publishing
