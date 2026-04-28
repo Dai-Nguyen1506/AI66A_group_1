@@ -127,3 +127,73 @@ a net improvement in F2-score and a significantly lower false alert rate.
 The trade-off is favorable — catching slightly fewer fraud cases (−1.25pp
 recall) in exchange for far fewer false alerts (−0.075pp) is operationally
 beneficial.
+
+---
+
+## Key Experiments Summary
+
+This section summarizes the most impactful experimental findings across
+the project. Full details are documented in the respective methodology
+documents.
+
+### 1. Dropping `city_fraud_rate` — +30 to 40 points in Recall and F2
+
+Despite being computed with the same leakage-prevention methodology as
+`category_fraud_rate` and `merchant_fraud_rate`, `city_fraud_rate` was
+found to be the most harmful feature in the entire dataset (permutation
+importance ≈ −0.36). Removing it resulted in approximately 30–40 point
+improvement in both recall and F2-score — the single largest performance
+gain in the entire project.
+
+*Full details: `feature_engineering.md`, `model_explainability.md`*
+
+### 2. Imbalance Handling — scale_pos_weight vs Resampling
+
+| Strategy | F2-Score | PR-AUC | False Alert Rate |
+|----------|----------|--------|-----------------|
+| scale_pos_weight | **0.8115** | **0.8871** | **0.175%** |
+| Undersampling | 0.6403 | 0.8856 | 0.965% |
+| SMOTE | 0.2564 | 0.8378 | 5.34% |
+
+`scale_pos_weight` outperformed both resampling strategies across all
+metrics while keeping the training data unchanged.
+
+*Full details: `imbalance_handling.md`*
+
+### 3. Threshold Tuning — Default vs F2-Optimized
+
+| Threshold | Precision | Recall | F2-Score | False Alert Rate |
+|-----------|-----------|--------|----------|-----------------|
+| 0.5 (default) | 65.63% | 86.25% | 0.8115 | 0.175% |
+| 0.9534 (optimized) | 76.2% | 85.0% | 0.8311 | 0.10% |
+
+Moving from the default threshold to the F2-optimized threshold improved
+precision by +10.57 percentage points and F2-score by +0.0196, with only
+a minor reduction in recall (−1.25pp) and a significantly lower false
+alert rate.
+
+*Full details: `evaluation_strategy.md`*
+
+### 4. Hyperparameter Tuning — Baseline vs Tuned XGBoost
+
+| | Baseline XGBoost | Tuned XGBoost | Improvement |
+|---|---|---|---|
+| PR-AUC | 0.8872 | 0.8975 | +0.0103 |
+| F2-Score | 0.8115 | 0.8311 | +0.0196 |
+| False Alert Rate | 0.175% | 0.10% | −0.075pp |
+
+Optuna optimization over 50 trials improved PR-AUC by +0.0103 and
+F2-score by +0.0196, confirming that hyperparameter tuning provided
+meaningful gains beyond the baseline configuration.
+
+*Full details: `evaluation_strategy.md`, `results.md`*
+
+### 5. Neural Network vs Tree-Based Models
+
+The MLP achieved a PR-AUC of 0.8309 — approximately 0.067 below
+XGBoost's 0.8975. This confirmed that for this structured tabular
+feature set, gradient boosting outperforms deep learning. Neural
+networks would likely be more competitive with sequential or graph-based
+transaction features.
+
+*Full details: `modeling.md`*
